@@ -6,6 +6,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,3 +37,15 @@ jobs:
         with:
           name: sleepy-pay-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Publish APK to a release (direct download)
+        if: github.event_name != 'pull_request'
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk sleepy-pay.apk
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest sleepy-pay.apk --target "${{ github.sha }}" --prerelease \
+            --title "Sleepy Pay (latest debug build)" \
+            --notes "Debug APK built from commit ${{ github.sha }}. Install sleepy-pay.apk directly on your phone."
