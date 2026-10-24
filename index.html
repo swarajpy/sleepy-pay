@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#14172b">
+  <title>Sleepy Pay</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <style>
+    :root { --bg:#14172b; --card:#1d2140; --text:#eef0ff; --muted:#9aa0c8; --accent:#8b9cff; --ok:#6ee7b7; --bad:#ff8a8a; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+    main { max-width:480px; margin:0 auto; padding:20px 16px 48px; }
+    h1 { font-size:1.6rem; margin:8px 0 2px; }
+    .sub { color:var(--muted); margin:0 0 20px; }
+    .card { background:var(--card); border-radius:16px; padding:16px; margin-bottom:16px; }
+    label { display:block; color:var(--muted); font-size:.85rem; margin:0 0 6px; }
+    input { width:100%; padding:12px; border-radius:10px; border:1px solid #343a6b; background:#12152c; color:var(--text); font-size:1rem; }
+    button, a.btn { display:inline-block; text-align:center; text-decoration:none; padding:12px 16px; border-radius:10px; border:0; background:var(--accent); color:#10142b; font-weight:600; font-size:1rem; cursor:pointer; }
+    button.secondary { background:#2b3160; color:var(--text); }
+    button:disabled { opacity:.5; cursor:not-allowed; }
+    .row { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+    .row > * { flex:1; }
+    video { width:100%; border-radius:12px; background:#000; }
+    .msg { margin:10px 0 0; min-height:1.2em; font-size:.9rem; }
+    .msg.bad { color:var(--bad); } .msg.ok { color:var(--ok); }
+    .payee { font-size:1.1rem; font-weight:600; word-break:break-all; }
+    .kv { color:var(--muted); font-size:.9rem; }
+    ol { padding-left:20px; margin:8px 0 0; } li { margin:6px 0; }
+    .hide { display:none; }
+    footer { color:var(--muted); font-size:.8rem; text-align:center; margin-top:24px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>🌙 Sleepy Pay</h1>
+  <p class="sub">Pay without internet. Scan, then follow the *99# steps.</p>
+
+  <section class="card" id="inputCard">
+    <label for="manual">UPI ID or pasted UPI link</label>
+    <input id="manual" type="text" inputmode="email" autocomplete="off" placeholder="name@bank">
+    <div class="row">
+      <button id="useManual">Continue</button>
+      <button id="scanBtn" class="secondary">Scan QR</button>
+    </div>
+    <video id="video" class="hide" playsinline muted></video>
+    <p id="inputMsg" class="msg" role="status"></p>
+  </section>
+
+  <section class="card hide" id="payCard">
+    <div class="kv">Paying</div>
+    <div class="payee" id="payeeName"></div>
+    <div class="kv" id="payeeVpa"></div>
+    <div style="margin-top:14px">
+      <label for="amount">Amount (₹)</label>
+      <input id="amount" type="text" inputmode="decimal" placeholder="0.00">
+    </div>
+    <div class="row">
+      <button id="copyVpa" class="secondary">Copy UPI ID</button>
+      <button id="copyAmt" class="secondary">Copy amount</button>
+    </div>
+    <p id="payMsg" class="msg" role="status"></p>
+
+    <div class="kv" style="margin-top:12px">Steps (menu wording can differ slightly by bank)</div>
+    <ol>
+      <li>Tap <b>Open *99#</b> below. Your phone's dialer starts a USSD session.</li>
+      <li>Pick <b>Send Money</b>, then <b>UPI ID</b>.</li>
+      <li>Paste the UPI ID, enter the amount, and add a remark if asked.</li>
+      <li>Enter your <b>UPI PIN</b> to confirm.</li>
+    </ol>
+    <div class="row">
+      <a class="btn" id="dialBtn" href="tel:*99%23">Open *99#</a>
+      <button id="resetBtn" class="secondary">New payment</button>
+    </div>
+  </section>
+
+  <footer>Sleepy Pay never sends your payment data anywhere. Everything stays on this device.</footer>
+</main>
+
+<script src="upi.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

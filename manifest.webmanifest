@@ -1,0 +1,12 @@
+{
+  "name": "Sleepy Pay",
+  "short_name": "Sleepy Pay",
+  "description": "Offline UPI payments over *99#",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#14172b",
+  "theme_color": "#14172b",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
