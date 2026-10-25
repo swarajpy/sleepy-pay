@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="bg">#050606</color>
-    <color name="glass">#14FFFFFF</color>
-    <color name="glass_stroke">#26FFFFFF</color>
-    <color name="text">#F2F4F3</color>
-    <color name="text2">#8A918E</color>
-    <color name="accent">#8B9CFF</color>
-    <color name="on_accent">#0B0E1F</color>
-    <color name="ok">#6EE7B7</color>
-    <color name="bad">#FF8A8A</color>
+    <color name="bg">#F4F5FB</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="text">#14172B</color>
+    <color name="text2">#6B7090</color>
+    <color name="hint">#9AA0BC</color>
+    <color name="accent">#5B4DF5</color>
+    <color name="accent_dark">#3F34B8</color>
+    <color name="accent_soft">#ECEBFF</color>
+    <color name="on_accent">#FFFFFF</color>
+    <color name="border">#E6E8F2</color>
+    <color name="border_strong">#D5D8E8</color>
+    <color name="ok">#16A34A</color>
+    <color name="ok_soft">#DCFCE7</color>
+    <color name="bad">#DC2626</color>
+    <color name="warn_bg">#FFF4E0</color>
+    <color name="warn_text">#92400E</color>
+    <color name="scan_accent">#A5B4FC</color>
 </resources>

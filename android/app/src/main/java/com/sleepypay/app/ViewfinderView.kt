@@ -18,7 +18,7 @@ class ViewfinderView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
 ) : View(context, attrs) {
 
-    private val accent = ContextCompat.getColor(context, R.color.accent)
+    private val accent = ContextCompat.getColor(context, R.color.scan_accent)
 
     private val dim = Paint().apply {
         color = 0xB3000000.toInt()
