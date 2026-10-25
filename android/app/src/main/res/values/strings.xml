@@ -29,4 +29,7 @@
     <string name="new_payment">New</string>
     <string name="no_dialer">No dialer app found on this device.</string>
     <string name="camera_denied">Camera permission is needed to scan QR codes.</string>
+    <string name="scan_hint">Point at a UPI QR code</string>
+    <string name="back">Back</string>
+    <string name="torch">Torch</string>
 </resources>

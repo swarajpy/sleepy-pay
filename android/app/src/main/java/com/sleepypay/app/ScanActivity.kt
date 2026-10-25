@@ -4,6 +4,9 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
+import android.view.View
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,7 +24,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 
-/** Full-screen QR scanner. Decodes on-device, so it works with no internet. */
+/** Full-screen QR scanner with a viewfinder and torch. Decodes on-device, so it works with no internet. */
 class ScanActivity : ComponentActivity() {
 
     companion object {
@@ -29,8 +32,10 @@ class ScanActivity : ComponentActivity() {
     }
 
     private lateinit var previewView: PreviewView
+    private lateinit var torchBtn: ImageButton
     private lateinit var executor: ExecutorService
     private val done = AtomicBoolean(false)
+    private var torchOn = false
 
     private val permission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         if (granted) startCamera() else {
@@ -41,9 +46,12 @@ class ScanActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        previewView = PreviewView(this)
-        setContentView(previewView)
+        setContentView(R.layout.activity_scan)
+        previewView = findViewById(R.id.preview)
+        torchBtn = findViewById(R.id.torchBtn)
         executor = Executors.newSingleThreadExecutor()
+
+        findViewById<View>(R.id.backBtn).setOnClickListener { finish() }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             startCamera()
@@ -77,6 +85,7 @@ class ScanActivity : ComponentActivity() {
                     .addOnSuccessListener { codes ->
                         val raw = codes.firstNotNullOfOrNull { it.rawValue }
                         if (raw != null && raw.startsWith("upi://", ignoreCase = true) && done.compareAndSet(false, true)) {
+                            previewView.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
                             setResult(RESULT_OK, Intent().putExtra(EXTRA_RESULT, raw))
                             finish()
                         }
@@ -85,7 +94,17 @@ class ScanActivity : ComponentActivity() {
             }
 
             provider.unbindAll()
-            provider.bindToLifecycle(this, CameraSelector.DEFAULT_BACK_CAMERA, preview, analysis)
+            val camera = provider.bindToLifecycle(this, CameraSelector.DEFAULT_BACK_CAMERA, preview, analysis)
+
+            if (camera.cameraInfo.hasFlashUnit()) {
+                torchBtn.setOnClickListener {
+                    torchOn = !torchOn
+                    camera.cameraControl.enableTorch(torchOn)
+                    torchBtn.alpha = if (torchOn) 1f else 0.6f
+                }
+            } else {
+                torchBtn.visibility = View.GONE
+            }
         }, ContextCompat.getMainExecutor(this))
     }
 

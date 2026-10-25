@@ -1,5 +1,8 @@
 package com.sleepypay.app
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.animation.ValueAnimator
 import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -7,7 +10,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.ComponentActivity
@@ -26,6 +31,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var payeeName: TextView
     private lateinit var payeeVpa: TextView
     private var currentVpa: String = ""
+    private var pulse: ObjectAnimator? = null
 
     private val scanLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
         val text = res.data?.getStringExtra(ScanActivity.EXTRA_RESULT)
@@ -64,6 +70,33 @@ class MainActivity : ComponentActivity() {
         findViewById<View>(R.id.resetBtn).setOnClickListener { reset() }
     }
 
+    override fun onResume() {
+        super.onResume()
+        startPulse()
+    }
+
+    override fun onPause() {
+        pulse?.cancel()
+        super.onPause()
+    }
+
+    /** A soft ring that radiates from the scan button. */
+    private fun startPulse() {
+        val ring = findViewById<View>(R.id.pulseRing)
+        pulse?.cancel()
+        pulse = ObjectAnimator.ofPropertyValuesHolder(
+            ring,
+            PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 1.7f),
+            PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 1.7f),
+            PropertyValuesHolder.ofFloat(View.ALPHA, 0.6f, 0f),
+        ).apply {
+            duration = 1800
+            repeatCount = ValueAnimator.INFINITE
+            interpolator = DecelerateInterpolator()
+            start()
+        }
+    }
+
     private fun sayPay(text: String, good: Boolean) {
         payMsg.setTextColor(ContextCompat.getColor(this, if (good) R.color.ok else R.color.bad))
         payMsg.text = text
@@ -85,9 +118,22 @@ class MainActivity : ComponentActivity() {
         payeeVpa.text = p.vpa
         amount.setText(p.amount ?: "")
         sayPay(if (p.note.isNotEmpty()) getString(R.string.note_from_qr, p.note) else "", good = true)
+
         inputCard.visibility = View.GONE
         payCard.visibility = View.VISIBLE
         payBar.visibility = View.VISIBLE
+
+        payCard.alpha = 0f
+        payCard.translationY = 48f
+        payCard.animate().alpha(1f).translationY(0f).setDuration(320)
+            .setInterpolator(DecelerateInterpolator()).start()
+
+        payBar.alpha = 0f
+        payBar.translationY = 160f
+        payBar.animate().alpha(1f).translationY(0f).setDuration(380).setStartDelay(80)
+            .setInterpolator(DecelerateInterpolator()).start()
+
+        payCard.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
     }
 
     private fun copy(text: String, okMsg: String) {
@@ -110,6 +156,8 @@ class MainActivity : ComponentActivity() {
         payCard.visibility = View.GONE
         payBar.visibility = View.GONE
         inputCard.visibility = View.VISIBLE
+        inputCard.alpha = 0f
+        inputCard.animate().alpha(1f).setDuration(260).start()
         manual.setText("")
         amount.setText("")
         payMsg.text = ""
