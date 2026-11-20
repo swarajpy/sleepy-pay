@@ -25,6 +25,17 @@ Or open the `android/` folder in Android Studio and press Run.
 
 Nothing is sent to any server.
 
+## Card bill tracker (web app)
+
+The **Card bills** tab tracks credit card due dates, entirely on your device.
+
+- You enter a nickname and the **last 4 digits only**. Anything longer is rejected, so a full card number can never be stored.
+- Shows days left, due today, overdue (for a week after a missed date), and a banner on both tabs when a bill is due within 3 days.
+- **Mark paid**, plus an optional hand-entered outstanding amount and credit limit to show utilization.
+- Data lives in `localStorage`. No account, no network, no bank or card connection.
+
+Limits to know about: it is manual (no SMS reading or bank sync), and a web app cannot reliably send background notifications while closed, so reminders appear when you open it. Android native support for this tab has not been added yet.
+
 ## Status and known limits (be realistic)
 
 - **The Android project has not been compiled or run yet.** It was written without access to an Android SDK. Expect to fix a few build errors on the first CI run. The UPI parser has tests: `node --test` in `web/` passes, and the Kotlin port has matching JUnit tests that CI runs.

@@ -1,5 +1,5 @@
-const CACHE = 'sleepy-pay-v1';
-const SHELL = ['./', 'index.html', 'app.js', 'upi.js', 'manifest.webmanifest', 'icon.svg'];
+const CACHE = 'sleepy-pay-v2';
+const SHELL = ['./', 'index.html', 'app.js', 'upi.js', 'cards.js', 'cards-ui.js', 'manifest.webmanifest', 'icon.svg'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

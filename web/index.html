@@ -29,6 +29,23 @@
     .kv { color:var(--muted); font-size:.9rem; }
     ol { padding-left:20px; margin:8px 0 0; } li { margin:6px 0; }
     .hide { display:none; }
+    /* tabs + card bills */
+    .tabs { display:flex; gap:8px; margin:0 0 16px; }
+    .tabs button { flex:1; background:#2b3160; color:var(--text); }
+    .tabs button[aria-selected="true"] { background:var(--accent); color:#10142b; }
+    .banner { border-radius:12px; padding:10px 14px; margin:0 0 16px; font-size:.9rem; background:#3a2b1a; color:#ffd9a0; }
+    .banner.bad { background:#3d1e26; color:var(--bad); }
+    .bill { background:var(--card); border-radius:16px; padding:14px 16px; margin-bottom:12px; }
+    .bill h3 { margin:0; font-size:1.05rem; }
+    .chip { display:inline-block; font-size:.8rem; font-weight:600; padding:2px 10px; border-radius:999px; background:#2b3160; }
+    .chip.overdue { background:#5a2430; color:var(--bad); }
+    .chip.today, .chip.soon { background:#5a4320; color:#ffd9a0; }
+    .chip.paid { background:#1f4a3b; color:var(--ok); }
+    .bill .meta { color:var(--muted); font-size:.85rem; margin-top:6px; }
+    .bill .row button { padding:8px 10px; font-size:.9rem; }
+    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .grid2 > div > input { margin-bottom:0; }
+    .note { color:var(--muted); font-size:.8rem; margin-top:10px; }
     footer { color:var(--muted); font-size:.8rem; text-align:center; margin-top:24px; }
   </style>
 </head>
@@ -36,6 +53,15 @@
 <main>
   <h1>🌙 Sleepy Pay</h1>
   <p class="sub">Pay without internet. Scan, then follow the *99# steps.</p>
+
+  <div id="dueBanner" class="banner hide" role="status"></div>
+
+  <nav class="tabs" role="tablist">
+    <button id="tabPay" role="tab" aria-selected="true">Pay</button>
+    <button id="tabCards" role="tab" aria-selected="false">Card bills</button>
+  </nav>
+
+  <div id="viewPay">
 
   <section class="card" id="inputCard">
     <label for="manual">UPI ID or pasted UPI link</label>
@@ -75,10 +101,40 @@
     </div>
   </section>
 
+  </div>
+
+  <div id="viewCards" class="hide">
+    <div id="billList"></div>
+    <p id="emptyBills" class="sub hide">No cards yet. Add one to get due-date reminders when you open the app.</p>
+
+    <section class="card">
+      <h2 style="margin:0 0 4px;font-size:1.1rem">Add a card</h2>
+      <p class="note" style="margin:0 0 12px">Nickname and last 4 digits only. Never enter the full card number, CVV or PIN.</p>
+      <label for="cNick">Nickname</label>
+      <input id="cNick" type="text" maxlength="40" autocomplete="off" placeholder="e.g. HDFC Millennia">
+      <div class="grid2" style="margin-top:12px">
+        <div><label for="cLast4">Last 4 digits</label>
+          <input id="cLast4" type="text" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="1234"></div>
+        <div><label for="cDue">Bill due day (1-31)</label>
+          <input id="cDue" type="text" inputmode="numeric" maxlength="2" autocomplete="off" placeholder="5"></div>
+        <div><label for="cStmt">Statement day (optional)</label>
+          <input id="cStmt" type="text" inputmode="numeric" maxlength="2" autocomplete="off" placeholder="20"></div>
+        <div><label for="cLimit">Credit limit ₹ (optional)</label>
+          <input id="cLimit" type="text" inputmode="decimal" autocomplete="off" placeholder="150000"></div>
+      </div>
+      <div class="row"><button id="addCard">Add card</button></div>
+      <p id="cardMsg" class="msg" role="status"></p>
+    </section>
+
+    <p class="note">Reminders show here and as a banner when you open Sleepy Pay. A web app cannot reliably ring in the background while closed, so check it around your due dates. Bills are tracked by hand: Sleepy Pay never connects to your bank or card.</p>
+  </div>
+
   <footer>Sleepy Pay never sends your payment data anywhere. Everything stays on this device.</footer>
 </main>
 
 <script src="upi.js"></script>
+<script src="cards.js"></script>
 <script src="app.js"></script>
+<script src="cards-ui.js"></script>
 </body>
 </html>
