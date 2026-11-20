@@ -7,12 +7,15 @@
   <title>Sleepy Pay</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <style>
     :root { --bg:#14172b; --card:#1d2140; --text:#eef0ff; --muted:#9aa0c8; --accent:#8b9cff; --ok:#6ee7b7; --bad:#ff8a8a; }
     * { box-sizing: border-box; }
     body { margin:0; background:var(--bg); color:var(--text); font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
     main { max-width:480px; margin:0 auto; padding:20px 16px 48px; }
     h1 { font-size:1.6rem; margin:8px 0 2px; }
+    h1.brand { display:flex; align-items:center; gap:10px; }
+    h1.brand img { border-radius:10px; }
     .sub { color:var(--muted); margin:0 0 20px; }
     .card { background:var(--card); border-radius:16px; padding:16px; margin-bottom:16px; }
     label { display:block; color:var(--muted); font-size:.85rem; margin:0 0 6px; }
@@ -51,7 +54,7 @@
 </head>
 <body>
 <main>
-  <h1>🌙 Sleepy Pay</h1>
+  <h1 class="brand"><img src="icon.svg" alt="" width="40" height="40"> Sleepy Pay</h1>
   <p class="sub">Pay without internet. Scan, then follow the *99# steps.</p>
 
   <div id="dueBanner" class="banner hide" role="status"></div>

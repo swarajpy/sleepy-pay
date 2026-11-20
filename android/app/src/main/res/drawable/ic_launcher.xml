@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Sleepy Pay logo: crescent moon with a rupee coin resting in its curve.
+     Same artwork as web/icon.svg (512 box scaled into the 8..100 area of this 108 canvas). -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
@@ -6,18 +8,30 @@
     android:viewportHeight="108">
     <path
         android:fillColor="#5B4DF5"
-        android:pathData="M32,8H76A24,24 0,0 1,100 32V76A24,24 0,0 1,76 100H32A24,24 0,0 1,8 76V32A24,24 0,0 1,32 8Z" />
+        android:pathData="M28,8H80A20,20 0 0 1 100,28V80A20,20 0 0 1 80,100H28A20,20 0 0 1 8,80V28A20,20 0 0 1 28,8Z" />
     <group
-        android:pivotX="38.8"
-        android:pivotY="54"
-        android:scaleX="0.85"
-        android:scaleY="0.85"
-        android:translateX="15.2">
+        android:translateX="8"
+        android:translateY="8"
+        android:scaleX="0.179688"
+        android:scaleY="0.179688">
         <path
             android:fillColor="#FFFFFF"
-            android:pathData="M60,30A28,28 0,1 0,60 78A26,26 0,0 1,60 30Z" />
+            android:pathData="M358.9,331.1A148,148 0 1 1 238.4,114.4A124,124 0 0 0 358.9,331.1Z" />
+        <path
+            android:fillColor="#FBBF24"
+            android:pathData="M268,318a50,50 0 1 0 100,0a50,50 0 1 0 -100,0Z" />
+        <path
+            android:strokeColor="#B45309"
+            android:strokeWidth="7"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:pathData="M303,298H335M303,311H335M303,298H317A13,13 0 0 1 317,324H303L328,344" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M392,112Q399.3,130.7 418,138Q399.3,145.3 392,164Q384.7,145.3 366,138Q384.7,130.7 392,112Z" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:fillAlpha="0.85"
+            android:pathData="M440,200Q443.9,210.1 454,214Q443.9,217.9 440,228Q436.1,217.9 426,214Q436.1,210.1 440,200Z" />
     </group>
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M70,54m-3.5,0a3.5,3.5 0,1 1,7 0a3.5,3.5 0,1 1,-7 0" />
 </vector>

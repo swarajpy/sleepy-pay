@@ -1,4 +1,6 @@
-# 🌙 Sleepy Pay
+<p align="center"><img src="web/icon.svg" width="96" alt="Sleepy Pay logo"></p>
+
+# Sleepy Pay
 
 Offline UPI payments over NPCI's `*99#` USSD service. Scan a UPI QR code (no internet needed), and Sleepy Pay gives you the exact UPI ID and amount to use in the `*99#` session.
 
